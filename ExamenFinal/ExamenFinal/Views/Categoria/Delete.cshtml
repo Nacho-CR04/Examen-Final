@@ -24,10 +24,38 @@
             @Html.DisplayFor(model => model.Descripcion)
         </dd>
     </dl>
-    
-    <form asp-action="Delete">
+
+    <form asp-action="Delete" asp-controller="Categoria" method="post" id="formulario">>
         <input type="hidden" asp-for="IdCategoria" />
         <input type="submit" value="Delete" class="btn btn-default" /> |
+        <input type="button" value="Borrar con Ajax" class="btn btn-warning" id="deleteAjax" /> |
         <a asp-action="Index">Back to List</a>
     </form>
 </div>
+
+<script src="~/lib/jquery/dist/jquery.min.js" asp-append-version="true"></script>
+<script src="~/js/sweetalert2.all.min.js"></script>
+<script>
+$(document).ready(function () {
+    $("#deleteAjax").click(function (event) {
+        var form = $("#formulario");
+        $.ajax({
+            url: "/Categoria/DeleteConAjax",
+            data: form.serialize(),
+            method: "POST",
+            success: function (resultado) {
+
+                    Swal.fire({
+                        type: 'success',
+                        title: '<strong>Registro borrado!!!</strong>',
+                        text: resultado.mensaje,
+                        confirmButtonText: 'Ok'
+                    }).then((result) => {
+                        if (result.value) { window.location.href = '@Url.Action("Index", "Categoria")' }
+                    });
+
+                    }
+            });
+        });
+    });
+</script>
