@@ -174,6 +174,7 @@ namespace ExamenFinal.Controllers
             return Json(new { value = value, status = status, mensaje = mensaje });
         }
 
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult CreateConAjax(Categoria categoria)

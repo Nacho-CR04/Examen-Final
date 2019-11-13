@@ -24,27 +24,25 @@
     <tbody>
         @foreach (var item in Model)
         {
-        <tr>
-            <td class="edit" id="@item.IdCategoria" data-propertyName="Nombre">
-                @Html.DisplayFor(modelItem => item.Nombre)
-            </td>
-            <td class="edit" id="@item.IdCategoria" data-propertyName="Apellido">
-                @Html.DisplayFor(modelItem => item.Descripcion)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.IdCategoria">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.IdCategoria">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.IdCategoria">Delete</a>
-            </td>
-        </tr>
+            <tr>
+                <td class="edit" id="@item.IdCategoria" data-propertyName="Nombre">
+                    @Html.DisplayFor(modelItem => item.Nombre)
+                </td>
+                <td class="edit" id="@item.IdCategoria" data-propertyName="Descripcion">
+                    @Html.DisplayFor(modelItem => item.Descripcion)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.IdCategoria">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.IdCategoria">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.IdCategoria">Delete</a>
+                </td>
+            </tr>
         }
     </tbody>
 </table>
-
-<script src="~/js/jquery.dataTables.min.js" asp-append-version="true"></script>
 @section scripts{
     <script>
-        $(document).ready(function () {
+    $(document).ready(function () {
             $('#table').DataTable(); $(".edit").editable("/Categoria/EditField", {
                 submitdata: function () {
                     return {
@@ -58,7 +56,6 @@
                     if (jsonData.status) { $(this).text(jsonData.value); }
                     else { $(this).text(jsonData.mensaje); }
                 }
-            }); 
-        });
-    </script>
+            });
+        });</script>
 }

@@ -25,7 +25,7 @@
             </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-default" />
-                <input type="button" value="Editar con Ajax" class="btn btn-success" id="editAjax" />
+                <input type="button" value="Edit whit Ajax" class="btn btn-warning" id="EditAjax" />
             </div>
         </form>
     </div>
@@ -42,17 +42,17 @@
 <script src="~/js/sweetalert2.all.min.js"></script>
 <script>
     $(document).ready(function () {
-        $("#editAjax").click(function (event) {
+        $("#EditAjax").click(function (event) {
             var form = $("#formulario");
             $.ajax({
                 url: "/Categoria/EditConAjax",
                 data: form.serialize(), method: "POST",
-                success: function (resultado) {
-                    if (resultado.mensaje=="Registro editado") {
+               success: function (resultado) {
+                    if (resultado != null) {
                     Swal.fire({
                         type: 'success',
-                        title: '<strong>Registro editado!!!</strong>',
-                        text: resultado.mensaje,
+                        title: '<strong>Registro Editado!!!</strong>',
+                        //text: resultado.mensaje,
                         confirmButtonText: 'Ok'
                     }).then((result) => {
                         if (result.value) { window.location.href = '@Url.Action("Index", "Categoria")' }
@@ -65,7 +65,7 @@
                     })
                 }
 }
-});
-});
-});
+            });
+        });
+    });
 </script>
