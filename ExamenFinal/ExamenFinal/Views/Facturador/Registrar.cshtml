@@ -1,0 +1,208 @@
+﻿@model ExamenFinal.Models.FacturaViewModel
+@{
+    ViewData["Title"] = "Registrar";
+}
+
+<h2 class="page-header">Nueva venta</h2>
+
+@using (Html.BeginForm("Registrar", "Facturador", FormMethod.Post, new { id = "frm-comprobante" }))
+{
+    <div class="row">
+        <div class="col-xs-12">
+          
+                <div class="col-xs-2">
+                    @Html.TextBoxFor(x => x.CabeceraIdCliente, new { @class = "form-control", placeholder = "Cliente Id", id = "IdCliente" })
+                </div>
+
+                <div class="form-group">
+                    @Html.HiddenFor(x => x.CabeceraIdCliente)
+                    @Html.TextBoxFor(x => x.CabeceraIdCliente, new { @class = "form-control", placeholder = "Buscar Cliente", id = "Cliente" })
+                   
+                </div>
+
+                <div class="well well-sm">
+                    <div class="row">
+                        <div class="col-xs-2">
+                            @Html.TextBoxFor(x => x.CabeceraIdProducto, new { @class = "form-control", placeholder = "Producto Id", id = "IdProducto" })
+                        </div>
+                        <div class="col-xs-7">
+                            @Html.HiddenFor(x => x.CabeceraIdProducto)
+                            @Html.TextBoxFor(x => x.CabeceraNombreProducto, new { @class = "form-control", placeholder = "Buscar producto", id = "Producto" })
+                            @Html.ValidationMessage("producto_agregar", null, new { @class = "label label-danger" })
+                        </div>
+                        <div class="col-xs-2">
+                            @Html.TextBoxFor(x => x.CabeceraCantidadProducto, new { @class = "form-control", placeholder = "Cantidad" })
+                        </div>
+                        <div class="col-xs-2">
+                            <div class="input-group">
+                                <span class="input-group-addon" id="basic-addon1">S/.</span>
+                                @Html.TextBoxFor(x => x.CabeceraPrecioProducto, new { @class = "form-control", placeholder = "Precio", id = "Precio" })
+                            </div>
+                        </div>
+                        <div class="col-xs-1">
+                            <button class="btn btn-primary" type="submit" value="agregar_producto" name="action">
+                                <i class="glyphicon glyphicon-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <hr />
+
+                <ul id="facturador-detalle" class="list-group">
+                    @if (Model.DetalleFactura.Count > 0)
+                    {
+                        <li class="list-group-item">
+                            <div class="row">
+                                <div class="col-xs-1">
+                                    <b>Cliente</b>
+                                </div>
+                                <div class="col-xs-5">
+                                    <b>Producto</b>
+                                </div>
+                                <div class="col-xs-2 text-center">
+                                    <b>Cantidad</b>
+                                </div>
+                                <div class="col-xs-2 text-right">
+                                    <b>Precio Unitario</b>
+                                </div>
+                                <div class="col-xs-2 text-right">
+                                    <b>Monto</b>
+                                </div>
+                            </div>
+                        </li>
+                    }
+                    @foreach (var d in Model.DetalleFactura)
+                    {
+                        var i = Model.DetalleFactura.IndexOf(d);
+                <li class="list-group-item">
+                    <!-- Modelo -->
+                    @Html.Hidden("DetalleFactura[" + i + "].IdProducto", d.IdProducto)
+                    @Html.Hidden("DetalleFactura[" + i + "].IdCliente", d.IdCliente)
+                    @Html.Hidden("DetalleFactura[" + i + "].Cliente", d.NombreCliente)
+                    @Html.Hidden("DetalleFactura[" + i + "].NombreProducto", d.NombreProducto)
+                    @Html.Hidden("DetalleFactura[" + i + "].PrecioUnitario", d.PrecioUnitario)
+                    @Html.Hidden("DetalleFactura[" + i + "].Cantidad", d.Cantidad)
+                    @Html.Hidden("DetalleFactura[" + i + "].Retirar", d.Retirar, new { @class = "retirar" })
+
+                    <div class="row">
+                        <div class="col-xs-1 text-right">
+                            <button class="btn btn-danger btn-xs btn-block btn-retirar" type="submit" value="retirar_producto" name="action">
+                                <i class="glyphicon glyphicon-remove"></i>
+                            </button>
+                        </div>
+                        <div class="col-xs-5">
+                            @d.NombreCliente
+                        </div>
+                        <div class="col-xs-5">
+                            @d.NombreProducto
+                        </div>
+                        <div class="col-xs-2 text-center">
+                            @d.Cantidad
+                        </div>
+                        <div class="col-xs-2 text-right">
+                            @string.Format("{0:c}", d.PrecioUnitario)
+                        </div>
+                        <div class="col-xs-2 text-right">
+                            @string.Format("{0:c}", d.Total())
+                        </div>
+                    </div>
+                </li>
+                    }
+                    @if (Model.DetalleFactura.Count > 0)
+                    {
+                        <li class="list-group-item text-right" style="font-size:18px;">
+                            @string.Format("{0:c}", Model.Total())
+                        </li>
+                    }
+                </ul>
+
+                @if (Model.DetalleFactura.Count > 0)
+                {
+                    <button class="btn btn-primary btn-block btn-lg" type="submit" value="generar" name="action">Generar venta</button>
+                }
+
+                @*@if (Model.ComprobanteDetalle.Count > 0)
+            {
+                <button class="btn btn-primary btn-block btn-lg" type="submit" value="generar" name="action">Generar comprobante</button>
+            }*@
+
+            </div>
+        </div>
+
+}
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            LimpiarAgregarProducto();
+
+            $(".btn-retirar").click(function () {
+                if (confirm('¿Está seguro de retirar el item seleccionado?')) {
+                    $(this).closest('.list-group-item').find('.retirar').val("True");
+                    return true;
+                }
+
+                return false;
+            });
+        })
+        $("#IdProducto").focusout(function () {
+            
+            $.ajax({
+                // En data puedes utilizar un objeto JSON, un array o un query string
+                data: { "id": $("#IdProducto").val() },
+                //Cambiar a type: POST si necesario
+                type: "GET",
+                // Formato de datos que se espera en la respuesta
+                dataType: "JSON",
+                // URL a la que se enviará la solicitud Ajax
+                url: "/Facturador/ProductosJSON",
+                success: function (response) {
+                    if (response.length == 0) {
+                        alert("Producto no encontrado");
+                        $("#Producto").val("");
+                        $("#Precio").val("");
+                        $("#Cantidad").val(1);
+                    } else {
+                        $("#Producto").val(response[0].Nombre);
+                        $("#Precio").val(response[0].Precio);
+                        $("#Cantidad").focus();
+                    }
+                }
+            });
+
+        });
+         $("#IdCliente").focusout(function () {
+            
+            $.ajax({
+                // En data puedes utilizar un objeto JSON, un array o un query string
+                data: { "id": $("#IdCliente").val() },
+                //Cambiar a type: POST si necesario
+                type: "GET",
+                // Formato de datos que se espera en la respuesta
+                dataType: "JSON",
+                // URL a la que se enviará la solicitud Ajax
+                url: "/Facturador/ClientesJSON",
+                success: function (response) {
+                    if (response.length == 0) {
+                        alert("Cliente no encontrado");
+                        $("#Cliente").val("");
+                        
+                    } else {
+                        $("#Cliente").val(response[0].Nombre);
+                       
+                    }
+                }
+            });
+
+        });
+
+        function LimpiarAgregarProducto() {
+            $("#CabeceraProductoId").val("");
+            $("#Producto").val("");
+            $("#CabeceraProductoPrecio").val("");
+            $("#CabeceraProductoCantidad").val(1);
+        }
+    </script>
+}
+

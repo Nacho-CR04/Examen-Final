@@ -1,0 +1,54 @@
+﻿@model IEnumerable<ExamenFinal.Models.Factura>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Registro de ventas</h2>
+
+<h2 class="paginate_button">
+    <a class="btn btn-primary pull-right" asp-action="Registrar">Nueva venta</a>
+</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Cliente)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Fecha)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SubTotal)
+            </th>
+            @*<th>
+                @Html.DisplayNameFor(model => model.Vendedor)
+            </th>*@
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.IdCliente)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Fecha)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SubTotal)
+                </td>
+                @*<td>
+                    @Html.DisplayFor(modelItem => item.Vendedor)
+                </td>*@
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.IdFactura">Edit</a> |
+                    <a asp-action="Detalle" asp-route-id="@item.IdFactura">Detalle</a> |
+                    <a asp-action="Delete" asp-route-id="@item.IdFactura">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

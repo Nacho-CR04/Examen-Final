@@ -12,6 +12,7 @@ namespace ExamenFinal.Models
         public int IdProducto { get; set; }
         public int idProveedor { get; set; }
         public int IdCategoria { get; set; }
+        public string nombreProducto { get; set; }
         public decimal PrecioCosto { get; set; }
         public decimal PrecioVenta { get; set; }
         public int Existencia { get; set; }

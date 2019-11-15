@@ -13,10 +13,11 @@ namespace ExamenFinal.Data
             : base(options)
         {
         }
-        public DbSet<ExamenFinal.Models.Categoria> Categoria { get; set; }
         public DbSet<ExamenFinal.Models.Cliente> Cliente { get; set; }
+        public DbSet<ExamenFinal.Models.Categoria> Categoria { get; set; }
         public DbSet<ExamenFinal.Models.Empleado> Empleado { get; set; }
         public DbSet<ExamenFinal.Models.Producto> Producto { get; set; }
         public DbSet<ExamenFinal.Models.Proveedor> Proveedor { get; set; }
+        public DbSet<ExamenFinal.Models.Factura> Factura { get; set; }
     }
 }

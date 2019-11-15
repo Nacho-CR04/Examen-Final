@@ -1,0 +1,62 @@
+﻿@model ExamenFinal.Models.Factura
+@{
+    ViewData["Factura"] = "Detalle";
+
+    ViewBag.Title = "Factura #" + Model.IdFactura;
+}
+
+<h2 class="page-header">Comprobante #@Model.IdFactura.ToString().PadLeft(4)</h2>
+
+<div class="row">
+    <div class="col-xs-12">
+
+        <ul id="facturador-detalle" class="list-group">
+            <li class="list-group-item">
+                <h3>FACTURA</h3>
+
+            </li>
+            <li class="list-group-item">
+                <div class="row">
+                    <div class="col-xs-6">
+                        <b>Producto</b>
+                    </div>
+                    <div class="col-xs-2 text-center">
+                        <b>Cantidad</b>
+                    </div>
+                    <div class="col-xs-2 text-right">
+                        <b>Precio Unitario</b>
+                    </div>
+                    <div class="col-xs-2 text-right">
+                        <b>Monto</b>
+                    </div>
+                </div>
+            </li>
+            @foreach (var d in Model.DetalleFactura)
+            {
+                <li class="list-group-item">
+                    <div class="row">
+                        <div class="col-xs-6">
+
+                            @Html.DisplayName(d.Producto.IdProducto.ToString())
+                        </div>
+                        <div class="col-xs-2 text-center">
+                            @d.Cantidad
+                        </div>
+                        <div class="col-xs-2 text-right">
+                            @string.Format("{0:c}", d.Precio)
+                        </div>
+                        <div class="col-xs-2 text-right">
+                            @string.Format("{0:c}", d.Total)
+                        </div>
+                    </div>
+                </li>
+            }
+            @if (Model.DetalleFactura.Count > 0)
+            {
+                <li class="list-group-item text-right" style="font-size:18px;">
+                    @string.Format("{0:c}", Model.SubTotal)
+                </li>
+            }
+        </ul>
+    </div>
+</div>
